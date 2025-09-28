@@ -5,178 +5,244 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Raj Shinde — Resume</title>
 
-  <!-- Tailwind via CDN (Play CDN) -->
+  <!-- Tailwind via CDN -->
+  <script>
+    tailwind = { darkMode: 'class' }
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --brand:#0f172a;       /* slate-900 */
-      --accent:#0ea5a4;      /* teal-400 */
-      --muted:#475569;       /* slate-600 */
+      --card-bg: #ffffff;
+      --outer-bg: #0f1724; /* dark side gutters */
+      --muted: #475569;
     }
 
-    /* Use Inter for body, Merriweather for headings */
-    body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:var(--brand); }
-    h1,h2,h3 { font-family: "Merriweather", serif; }
+    html, body { height:100%; }
+    body{
+      margin:0;
+      padding:0 0 40px;               /* extra safe bottom padding */
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background-color: var(--outer-bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:#0f172a;
+      -webkit-overflow-scrolling: touch;
+    }
+    h1,h2,h3 { font-family: "Merriweather", serif; margin:0; }
 
-    /* Print-friendly tweaks */
+    /* Shrunk root font so everything looks compact (like your preferred screenshot) */
+    html { font-size: 14px; } /* 1rem = 14px => text-base ≈14px */
+
+    /* Resume container: center card with dark gutters */
+    .resume-wrapper {
+      display:flex;
+      justify-content:center;
+      padding: 24px;
+    }
+
+    /* The card itself will be horizontally scrollable on narrow screens so layout doesn't collapse */
+    .resume-card {
+      background: var(--card-bg);
+      width: 980px;                /* fixed layout width (keeps desktop look) */
+      border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(2,6,23,0.6);
+      overflow: auto;             /* allows horizontal scroll when viewport < 980px */
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid rgba(15,23,42,0.06);
+      margin-bottom: 120px;       /* big bottom gap */
+    }
+
+    /* inside padding */
+    .resume-inner { padding: 22px 28px 28px; }
+
+    /* Keep desktop-like 3-column grid always */
+    .resume-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; align-items: start; }
+
+    /* left column narrower visually: we'll span left column across column 1, right content uses col 2-3 */
+    .left-col { grid-column: 1 / 2; }
+    .right-col { grid-column: 2 / 4; }
+
+    /* Section title style */
+    .section-title { display:inline-flex; gap:.5rem; align-items:center; font-weight:700; color:#0f172a; }
+
+    /* smaller text utilities (using rem-based tailwind classes will scale with html font-size) */
+    .name { font-size: 2rem; } /* ~28px (2rem * 14px) */
+    .subtitle { font-size: 0.95rem; color: #475569; margin-top:6px; }
+
+    /* print tweaks */
     @media print {
-      body { -webkit-print-color-adjust: exact; }
+      body { background: white; padding: 0; }
+      .resume-card { box-shadow: none; border: none; margin: 0; max-width: 100%; width: 100%; }
       .no-print { display: none !important; }
-      .page { margin: 0; box-shadow: none; }
     }
 
-    /* Small visual touch for section headings */
-    .section-title {
-      display:inline-flex;
-      gap:.5rem;
-      align-items:center;
-      color:var(--brand);
-      font-weight:700;
+    /* On very large screens, keep the card centered and slightly wider if desired */
+    @media (min-width: 1200px) {
+      .resume-card { width: 1020px; }
     }
 
-    /* subtle vertical divider on wide screens */
-    @media (min-width: 1024px) {
-      .left-col { border-right: 1px solid rgba(15,23,42,0.06); }
+    /* Accessibility: ensure scrollbar not too big on mobile */
+    .resume-card::-webkit-scrollbar { height: 10px; }
+    .resume-card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 6px; }
+
+    /* Floating button */
+    .print-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ffffff;
+      color: #0f1724;
+      border-radius: 8px;
+      padding: 10px 14px;
+      box-shadow: 0 6px 16px rgba(2,6,23,0.45);
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .print-btn:active { transform: translateY(1px); }
+
+    /* Reduce left/right padding inside the card on very small viewports (when scrolling) for comfortable touch */
+    @media (max-width: 420px) {
+      .resume-inner { padding: 16px 18px 22px; }
     }
   </style>
 </head>
-<body class="bg-slate-900 antialiased p-6">
+<body>
 
-  <main class="max-w-4xl mx-auto bg-white page shadow-sm rounded-md ring-1 ring-slate-100">
-    <!-- Header -->
-    <header class="px-8 py-8 md:flex md:items-center md:justify-between">
-      <div>
-        <h1 class="text-3xl md:text-4xl text-slate-900 font-extrabold leading-tight">Raj Shinde</h1>
-        <p class="mt-1 text-sm text-muted-foreground text-slate-600">Entry-level QA / Software Tester — Aspiring SDET</p>
-      </div>
-
-      <div class="mt-5 md:mt-0 text-left md:text-right">
-        <p class="text-sm text-slate-700 font-medium">[City, India]</p>
-        <p class="text-sm text-slate-700">[email@example.com] • [ +91 XXXXXXXXXX ]</p>
-        <p class="text-sm text-slate-700">LinkedIn: [linkedin.com/in/your] • GitHub: [github.com/your]</p>
-      </div>
-    </header>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 px-8 pb-8">
-      <!-- Left column (narrow) -->
-      <aside class="left-col lg:col-span-1 lg:pr-6">
-        <!-- Short Summary -->
-        <section class="mb-6">
-          <h2 class="section-title text-base"><span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span> Summary</h2>
-          <p class="mt-3 text-sm text-slate-700">
-            Entry-level Software Tester skilled in manual testing, Selenium, Python, JIRA, and TestRail. Hands-on experience with test case design, defect tracking and automation scripts. Quick learner aiming for QA / SDET roles.
-          </p>
-        </section>
-
-        <!-- Skills -->
-        <section class="mb-6">
-          <h3 class="section-title text-base">Skills</h3>
-          <ul class="mt-3 text-sm text-slate-700 space-y-2">
-            <li><strong>Manual Testing:</strong> SDLC, STLC, Test case design, Defect reporting</li>
-            <li><strong>Automation & Code:</strong> Python, Selenium WebDriver, PyTest basics</li>
-            <li><strong>Tools:</strong> JIRA (Xray), TestRail, Postman</li>
-            <li><strong>Methodologies:</strong> Agile / Scrum, Traceability Matrix</li>
-            <li><strong>Soft skills:</strong> Problem solving, communication, discipline</li>
-          </ul>
-        </section>
-
-        <!-- Contact / Quick info -->
-        <section class="mb-6">
-          <h3 class="section-title text-base">Profile</h3>
-          <ul class="mt-3 text-sm text-slate-700 space-y-1">
-            <li><strong>Target role:</strong> QA Engineer | SDET (₹6 LPA+)</li>
-            <li><strong>Availability:</strong> Immediate</li>
-            <li><strong>Languages:</strong> English, Marathi, Hindi</li>
-          </ul>
-        </section>
-
-        <!-- Certifications -->
-        <section>
-          <h3 class="section-title text-base">Certifications</h3>
-          <ul class="mt-3 text-sm text-slate-700 space-y-1">
-            <li>ISTQB Foundation — Preparing</li>
-            <li>Udemy: Master Python by Building 100 Projects (in progress)</li>
-            <li>Udemy: Learn Software Testing & Become QA Engineer</li>
-          </ul>
-        </section>
-      </aside>
-
-      <!-- Right column (wide) -->
-      <section class="lg:col-span-2">
-        <!-- Projects -->
-        <div class="mb-6">
-          <h2 class="section-title text-lg">Projects & Hands-on Practice</h2>
-
-          <article class="mt-4 pb-4 border-b border-slate-100">
-            <h3 class="text-md font-semibold text-slate-800">E-commerce Manual Testing (Flipkart example)</h3>
-            <p class="mt-2 text-sm text-slate-700">
-              Designed and executed test cases for login, search, cart and checkout flows. Logged defects in JIRA (Xray) and maintained traceability between requirements and test cases.
-            </p>
-            <ul class="mt-2 text-sm text-slate-700 list-disc list-inside space-y-1">
-              <li>Test case design for functional and negative scenarios</li>
-              <li>Defect lifecycle management and reporting to stakeholders</li>
-            </ul>
-          </article>
-
-          <article class="mt-4 pb-4 border-b border-slate-100">
-            <h3 class="text-md font-semibold text-slate-800">TestRail Test Execution</h3>
-            <p class="mt-2 text-sm text-slate-700">
-              Created and executed test suites in TestRail. Managed test runs and produced execution reports for demo/review.
-            </p>
-          </article>
-
-          <article class="mt-4 pb-4 border-b border-slate-100">
-            <h3 class="text-md font-semibold text-slate-800">Selenium Automation Scripts (Python)</h3>
-            <p class="mt-2 text-sm text-slate-700">
-              Automated login, search and form submission scenarios using Python + Selenium. Implemented robust locators (XPath/CSS) and simple PyTest-based flows.
-            </p>
-          </article>
-
-          <article class="mt-4">
-            <h3 class="text-md font-semibold text-slate-800">Python Mini Projects</h3>
-            <p class="mt-2 text-sm text-slate-700">
-              Completed 100+ exercises (data structures, file handling, OOP). Built utilities for data validation and string processing used in small automation tasks.
-            </p>
-          </article>
-        </div>
-
-        <!-- Education -->
-        <div class="mb-6">
-          <h2 class="section-title text-lg">Education</h2>
-          <div class="mt-3">
-            <p class="text-sm text-slate-700 font-semibold">[Degree: e.g., B.Sc / B.Tech / Other] — [Year]</p>
-            <p class="text-sm text-slate-600">[College / University Name]</p>
+  <!-- Wrapper centers the horizontally-scrollable card -->
+  <div class="resume-wrapper">
+    <!-- resume-card has fixed width (980px) — on mobile it becomes scrollable horizontally to preserve layout -->
+    <div class="resume-card" role="main" aria-label="Resume card (horizontal scroll on small screens)">
+      <div class="resume-inner">
+        <!-- Header -->
+        <header style="display:flex; justify-content:space-between; align-items:flex-start; gap:18px;">
+          <div>
+            <div class="name" style="font-weight:800;">Raj Shinde</div>
+            <div class="subtitle">Entry-level QA / Software Tester — Aspiring SDET</div>
           </div>
-        </div>
 
-        <!-- Strengths / Achievements -->
-        <div class="mb-6">
-          <h2 class="section-title text-lg">Strengths & Achievements</h2>
-          <ul class="mt-3 text-sm text-slate-700 space-y-2">
-            <li>Quick learner with disciplined daily roadmap completion (60-day QA plan)</li>
-            <li>Strong problem-solving and debugging skills</li>
-            <li>Focused on outcome-driven testing and reliable reporting</li>
-          </ul>
-        </div>
+          <div style="text-align:right; min-width:260px; font-size:0.95rem; color:#374151;">
+            <div style="font-weight:600;">[City, India]</div>
+            <div>[email@example.com] • [+91 XXXXXXXXXX]</div>
+            <div>LinkedIn: [linkedin.com/in/your] • GitHub: [github.com/your]</div>
+          </div>
+        </header>
 
-        <!-- Footer / Optional small note -->
-        <div class="mt-8 text-sm text-slate-600">
-          <p><strong>Note:</strong> This resume is tailored for entry-level QA and SDET roles. Replace placeholders with exact contact, education, and links before submitting to employers.</p>
-        </div>
+        <div style="height:18px;"></div>
 
-      </section>
+        <!-- Grid: left column + right wide column -->
+        <div class="resume-grid" aria-hidden="false">
+          <!-- Left column -->
+          <aside class="left-col">
+            <section style="margin-bottom:18px;">
+              <div class="section-title" style="font-size:1.05rem;">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:9999px;background:#10b981;margin-right:8px;"></span>
+                Summary
+              </div>
+              <p style="margin-top:10px; color:#374151; line-height:1.6; font-size:0.95rem;">
+                Entry-level Software Tester skilled in manual testing, Selenium, Python, JIRA, and TestRail. Hands-on experience with test case design, defect tracking and automation scripts. Quick learner aiming for QA / SDET roles.
+              </p>
+            </section>
+
+            <section style="margin-bottom:18px;">
+              <div class="section-title" style="font-size:1.05rem;">Skills</div>
+              <ul style="margin-top:10px; color:#374151; line-height:1.6; font-size:0.95rem; padding-left:18px;">
+                <li><strong>Manual Testing:</strong> SDLC, STLC, Test case design, Defect reporting</li>
+                <li><strong>Automation:</strong> Python, Selenium WebDriver, PyTest basics</li>
+                <li><strong>Tools:</strong> JIRA (Xray), TestRail, Postman</li>
+                <li><strong>Methodologies:</strong> Agile / Scrum, Traceability Matrix</li>
+                <li><strong>Soft skills:</strong> Problem solving, communication, discipline</li>
+              </ul>
+            </section>
+
+            <section style="margin-bottom:18px;">
+              <div class="section-title" style="font-size:1.05rem;">Profile</div>
+              <ul style="margin-top:10px; color:#374151; line-height:1.6; font-size:0.95rem; padding-left:18px;">
+                <li><strong>Target role:</strong> QA Engineer | SDET (₹6 LPA+)</li>
+                <li><strong>Availability:</strong> Immediate</li>
+                <li><strong>Languages:</strong> English, Marathi, Hindi</li>
+              </ul>
+            </section>
+
+            <section>
+              <div class="section-title" style="font-size:1.05rem;">Certifications</div>
+              <ul style="margin-top:10px; color:#374151; line-height:1.6; font-size:0.95rem; padding-left:18px;">
+                <li>ISTQB Foundation — Preparing</li>
+                <li>Udemy: Master Python by Building 100 Projects (in progress)</li>
+                <li>Udemy: Learn Software Testing & Become QA Engineer</li>
+              </ul>
+            </section>
+          </aside>
+
+          <!-- Right column (spans two columns worth of space visually) -->
+          <section class="right-col">
+            <div style="margin-bottom:18px;">
+              <div class="section-title" style="font-size:1.05rem;">Projects & Hands-on Practice</div>
+
+              <article style="margin-top:12px; padding-bottom:12px; border-bottom:1px solid rgba(203,213,225,0.6);">
+                <h3 style="font-size:1.05rem; margin:0 0 8px 0; font-weight:700; color:#0f1724;">E-commerce Manual Testing (Flipkart example)</h3>
+                <p style="margin:0 0 8px 0; color:#374151; line-height:1.6; font-size:0.95rem;">
+                  Designed and executed test cases for login, search, cart and checkout flows. Logged defects in JIRA (Xray) and maintained traceability between requirements and test cases.
+                </p>
+                <ul style="margin:0; padding-left:20px; color:#374151; font-size:0.95rem; line-height:1.6;">
+                  <li>Test case design for functional and negative scenarios</li>
+                  <li>Defect lifecycle management and reporting to stakeholders</li>
+                </ul>
+              </article>
+
+              <article style="margin-top:14px; padding-bottom:12px; border-bottom:1px solid rgba(203,213,225,0.6);">
+                <h3 style="font-size:1.05rem; margin:0 0 8px 0; font-weight:700; color:#0f1724;">TestRail Test Execution</h3>
+                <p style="margin:0; color:#374151; line-height:1.6; font-size:0.95rem;">
+                  Created and executed test suites in TestRail. Managed test runs and produced execution reports for demo/review.
+                </p>
+              </article>
+
+              <article style="margin-top:14px; padding-bottom:12px; border-bottom:1px solid rgba(203,213,225,0.6);">
+                <h3 style="font-size:1.05rem; margin:0 0 8px 0; font-weight:700; color:#0f1724;">Selenium Automation Scripts (Python)</h3>
+                <p style="margin:0; color:#374151; line-height:1.6; font-size:0.95rem;">
+                  Automated login, search and form submission scenarios using Python + Selenium. Implemented robust locators (XPath/CSS) and simple PyTest-based flows.
+                </p>
+              </article>
+
+              <article style="margin-top:14px;">
+                <h3 style="font-size:1.05rem; margin:0 0 8px 0; font-weight:700; color:#0f1724;">Python Mini Projects</h3>
+                <p style="margin:0; color:#374151; line-height:1.6; font-size:0.95rem;">
+                  Completed 100+ exercises (data structures, file handling, OOP). Built utilities for data validation and string processing used in small automation tasks.
+                </p>
+              </article>
+            </div>
+
+            <div style="margin-top:12px; border-top:1px solid rgba(203,213,225,0.6); padding-top:12px;">
+              <div class="section-title" style="font-size:1.05rem;">Education</div>
+              <div style="margin-top:8px; font-weight:600; color:#374151; font-size:0.95rem;">[Degree: e.g., B.Sc / B.Tech / Other] — [Year]</div>
+              <div style="color:#6b7280; font-size:0.95rem;">[College / University Name]</div>
+            </div>
+
+            <div style="margin-top:18px;">
+              <div class="section-title" style="font-size:1.05rem;">Strengths & Achievements</div>
+              <ul style="margin-top:8px; color:#374151; line-height:1.6; font-size:0.95rem; padding-left:18px;">
+                <li>Quick learner with disciplined daily roadmap completion (60-day QA plan)</li>
+                <li>Strong problem-solving and debugging skills</li>
+                <li>Focused on outcome-driven testing and reliable reporting</li>
+              </ul>
+            </div>
+
+            <div style="margin-top:20px; color:#6b7280; font-size:0.95rem;">
+              <strong>Note:</strong> This resume is tailored for entry-level QA and SDET roles. Replace placeholders with exact contact, education, and links before submitting to employers.
+            </div>
+          </section>
+        </div>
+      </div>
     </div>
-  </main>
-
-  <!-- Small helper: press P to print (optional) -->
-  <div class="fixed bottom-6 right-6 no-print">
-    <button onclick="window.print()" class="bg-white text-black px-3 py-2 rounded-md text-md shadow hover:bg-green-700 hover:text-white">Print / Save PDF</button>
   </div>
+
+  <!-- Floating Print Button (no-print) -->
+  <button class="print-btn no-print" onclick="window.print()" aria-label="Print or save as PDF">Print / Save PDF</button>
 
 </body>
 </html>
