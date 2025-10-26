@@ -204,45 +204,74 @@
     </article>
   </div>
 
-  <button id="saveBtn" aria-label="Save as PDF">💾 Save as PDF</button>
+ <button id="saveBtn" aria-label="Save as PDF">💾 Save as PDF</button>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-  <script>
-    const saveBtn=document.getElementById('saveBtn');
-    saveBtn.addEventListener('click',async()=>{
-      saveBtn.style.display='none';
-      const wrap=document.createElement('div');
-      wrap.style.position='fixed';
-      wrap.style.left='-10000px';
-      wrap.style.top='0';
-      wrap.style.width='210mm';
-      wrap.style.height='297mm';
-      wrap.style.background='#fff';
-      const orig=document.getElementById('paper');
-      const clone=orig.cloneNode(true);
-      clone.style.width='calc(210mm - 24mm)';
-      clone.style.height='calc(297mm - 24mm)';
-      clone.style.boxSizing='border-box';
-      clone.style.padding=getComputedStyle(orig).padding;
-      clone.style.overflow='hidden';
-      clone.style.borderRadius='0';
-      clone.style.boxShadow='none';
-      wrap.appendChild(clone);
-      document.body.appendChild(wrap);
-      const opt={
-        margin:0,
-        filename:'Raj_Shinde_Resume.pdf',
-        image:{type:'jpeg',quality:0.98},
-        html2canvas:{scale:2,useCORS:true,scrollY:0},
-        jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
-      };
-      try{await html2pdf().set(opt).from(clone).save();}
-      catch(e){console.error(e);alert('PDF failed');}
-      finally{document.body.removeChild(wrap);saveBtn.style.display='';}
-    });
-    document.addEventListener('keydown',e=>{
-      if((e.ctrlKey||e.metaKey)&&(e.key==='s'||e.key==='S')){e.preventDefault();saveBtn.click();}
-    });
-  </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+  const saveBtn = document.getElementById('saveBtn');
+
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.style.display = 'none';
+
+    // Create a centered A4 wrapper
+    const wrap = document.createElement('div');
+    wrap.style.position = 'fixed';
+    wrap.style.left = '50%';
+    wrap.style.top = '0';
+    wrap.style.transform = 'translateX(-50%)'; // ✅ center horizontally
+    wrap.style.width = '210mm';
+    wrap.style.height = '297mm';
+    wrap.style.background = '#fff';
+    wrap.style.boxSizing = 'border-box';
+    wrap.style.display = 'flex';
+    wrap.style.alignItems = 'center';
+    wrap.style.justifyContent = 'center';
+
+    // Clone the paper content
+    const orig = document.getElementById('paper');
+    const clone = orig.cloneNode(true);
+
+    // Keep perfectly centered content within margins
+    clone.style.width = 'calc(210mm - 24mm)';
+    clone.style.height = 'calc(297mm - 24mm)';
+    clone.style.margin = 'auto';
+    clone.style.boxSizing = 'border-box';
+    clone.style.padding = getComputedStyle(orig).padding;
+    clone.style.overflow = 'hidden';
+    clone.style.borderRadius = '0';
+    clone.style.boxShadow = 'none';
+
+    wrap.appendChild(clone);
+    document.body.appendChild(wrap);
+
+    // PDF export options
+    const opt = {
+      margin: 0,
+      filename: 'Raj_Shinde_Resume.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    try {
+      await html2pdf().set(opt).from(clone).save();
+    } catch (e) {
+      console.error(e);
+      alert('PDF generation failed.');
+    } finally {
+      document.body.removeChild(wrap);
+      saveBtn.style.display = '';
+    }
+  });
+
+  // Keyboard shortcut Ctrl+S or Cmd+S
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+      e.preventDefault();
+      saveBtn.click();
+    }
+  });
+</script>
+
 </body>
 </html>
