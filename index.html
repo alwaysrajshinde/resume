@@ -1,174 +1,248 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Raj Shinde — Resume</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Raj Shinde — Resume (Readable Desktop Version)</title>
+<style>
+  :root{
+    --a4-w:210mm;
+    --a4-h:297mm;
+    --page-margin:18mm;
+    --print-margin:12mm;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;padding:0;background:#fff;font-family:"Times New Roman", Times, serif;color:#111}
 
-  <!-- Tailwind via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  .wrap{display:flex;align-items:flex-start;justify-content:center;padding:18px 0;min-height:100vh}
+  .paper{
+    width:calc(var(--a4-w) - 2 * var(--page-margin));
+    max-width:100%;
+    background:#fff;
+    padding:10mm;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    border-radius:2px;
+    color:#111;
+    overflow:visible;
+  }
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --card-bg: #ffffff;
-      --outer-bg: #0f1724; /* dark side gutters */
+  /* ------- PRINT -------- */
+  @page { size: A4; margin: var(--print-margin); }
+  @media print {
+    html,body{width:210mm;height:297mm;font-size:11pt;}
+    .wrap{padding:0}
+    .paper{
+      width:calc(210mm - 2 * var(--print-margin));
+      height:calc(297mm - 2 * var(--print-margin));
+      padding:10mm;
+      box-shadow:none;
+      border-radius:0;
     }
+    #saveBtn{display:none !important}
+  }
 
-    body{
-      margin:0;
-      font-family:"Inter", system-ui, sans-serif;
-      background-color:var(--outer-bg);
-      color:#0f172a;
-    }
+  /* ------- DESKTOP FONT BOOST -------- */
+  @media screen and (min-width:1000px){
+    body{font-size:1.12em;} /* +12% */
+  }
 
-    h1,h2,h3 { font-family:"Merriweather", serif; margin:0; }
+  /* Header */
+  header{text-align:center;margin-bottom:12px;}
+  h1.name{font-size:28pt;margin:0;letter-spacing:0.6px;font-weight:700;}
+  .contact{margin-top:6px;font-size:12pt;color:#111;}
+  .contact a{color:inherit;text-decoration:none;}
 
-    /* 🔽 Smaller global font size (like 80% zoom) */
-    html { font-size: 14px; } /* 1rem = 14px instead of 16px */
+  /* Section headings */
+  h2.section{
+    font-size:13.2pt;
+    text-transform:uppercase;
+    margin:18px 0 8px 0;
+    padding-bottom:6px;
+    border-bottom:1px solid #000;
+    letter-spacing:0.6px;
+  }
 
-    /* Resume card */
-    .resume-card{
-      background:var(--card-bg);
-      max-width:980px;
-      margin:40px auto 100px;
-      border-radius:8px;
-      box-shadow:0 6px 20px rgba(2,6,23,0.5);
-      border:1px solid rgba(15,23,42,0.06);
-    }
+  .entry{margin-top:8px;}
+  .entry .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .entry .row .title{font-weight:700;font-size:12pt;}
+  .entry .row .meta{font-size:11.5pt;color:#111;white-space:nowrap;}
 
-    @media print {
-      body{ background:white; }
-      .resume-card{ margin:0; max-width:100%; box-shadow:none; border:none; }
-      .no-print{ display:none !important; }
-    }
-  </style>
+  p.role{margin:4px 0 6px 0;font-size:11.8pt;font-weight:600;}
+  ul{margin:6px 0 10px 18px;padding:0;font-size:11.8pt;line-height:1.55;list-style-type:none;}
+  li{margin-bottom:6px;}
+  .muted{font-size:11.5pt;color:#111;margin:4px 0;}
+
+  .skills-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:8px 16px;
+    margin-top:8px;
+    font-size:11.8pt;
+  }
+  .skills-grid div{display:flex;align-items:flex-start;gap:6px;}
+  .bullet{font-weight:700;margin-right:6px;}
+
+  /* Save button */
+  #saveBtn{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    background:#0b5cff;
+    color:#fff;
+    border:0;
+    padding:10px 14px;
+    border-radius:6px;
+    font-size:12pt;
+    cursor:pointer;
+    font-family:Arial,Helvetica,sans-serif;
+    box-shadow:0 6px 16px rgba(11,92,255,0.18);
+    z-index:9999;
+  }
+  #saveBtn:active{transform:translateY(1px)}
+
+  @media (max-width:900px){
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .paper{padding:8mm}
+  }
+</style>
 </head>
 <body>
+  <div class="wrap">
+    <article class="paper" id="paper">
 
-  <!-- Resume Card -->
-  <div class="resume-card p-6 md:p-10">
-    <!-- Header -->
-    <header class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-      <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold">Raj Shinde</h1>
-        <p class="mt-1 text-sm md:text-base text-gray-600">Entry-level QA / Software Tester — Aspiring SDET</p>
-      </div>
-      <div class="text-sm md:text-base text-gray-700 text-left md:text-right">
-        <div class="font-medium">[City, India]</div>
-        <div>[email@example.com] • [+91 XXXXXXXXXX]</div>
-        <div>LinkedIn: [linkedin.com/in/your] • GitHub: [github.com/your]</div>
-      </div>
-    </header>
-
-    <!-- Grid layout -->
-    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Left column -->
-      <aside class="md:col-span-1 space-y-6">
-        <!-- Summary -->
-        <section>
-          <h2 class="font-bold text-lg flex items-center gap-2"><span class="w-2 h-2 bg-emerald-400 rounded-full"></span>Summary</h2>
-          <p class="mt-2 text-sm text-gray-700 leading-relaxed">
-            Entry-level Software Tester skilled in manual testing, Selenium, Python, JIRA, and TestRail. Hands-on experience with test case design, defect tracking and automation scripts. Quick learner aiming for QA / SDET roles.
-          </p>
-        </section>
-
-        <!-- Skills -->
-        <section>
-          <h3 class="font-bold text-lg">Skills</h3>
-          <ul class="mt-2 text-sm text-gray-700 space-y-1 list-disc list-inside">
-            <li><strong>Manual Testing:</strong> SDLC, STLC, Test case design, Defect reporting</li>
-            <li><strong>Automation:</strong> Python, Selenium WebDriver, PyTest basics</li>
-            <li><strong>Tools:</strong> JIRA (Xray), TestRail, Postman</li>
-            <li><strong>Methodologies:</strong> Agile / Scrum, Traceability Matrix</li>
-            <li><strong>Soft skills:</strong> Problem solving, communication, discipline</li>
-          </ul>
-        </section>
-
-        <!-- Profile -->
-        <section>
-          <h3 class="font-bold text-lg">Profile</h3>
-          <ul class="mt-2 text-sm text-gray-700 space-y-1 list-disc list-inside">
-            <li><strong>Target role:</strong> QA Engineer | SDET (₹6 LPA+)</li>
-            <li><strong>Availability:</strong> Immediate</li>
-            <li><strong>Languages:</strong> English, Marathi, Hindi</li>
-          </ul>
-        </section>
-
-        <!-- Certifications -->
-        <section>
-          <h3 class="font-bold text-lg">Certifications</h3>
-          <ul class="mt-2 text-sm text-gray-700 space-y-1 list-disc list-inside">
-            <li>ISTQB Foundation — Preparing</li>
-            <li>Udemy: Master Python by Building 100 Projects (in progress)</li>
-            <li>Udemy: Learn Software Testing & Become QA Engineer</li>
-          </ul>
-        </section>
-      </aside>
-
-      <!-- Right column -->
-      <section class="md:col-span-2 space-y-6">
-        <!-- Projects -->
-        <div>
-          <h2 class="font-bold text-lg">Projects & Hands-on Practice</h2>
-
-          <article class="mt-3 border-b border-gray-200 pb-3">
-            <h3 class="font-semibold text-base text-gray-800">E-commerce Manual Testing (Flipkart example)</h3>
-            <p class="mt-1 text-sm text-gray-700">Designed and executed test cases for login, search, cart and checkout flows. Logged defects in JIRA (Xray) and maintained traceability between requirements and test cases.</p>
-            <ul class="mt-1 text-sm text-gray-700 list-disc list-inside">
-              <li>Test case design for functional and negative scenarios</li>
-              <li>Defect lifecycle management and reporting to stakeholders</li>
-            </ul>
-          </article>
-
-          <article class="border-b border-gray-200 pb-3">
-            <h3 class="font-semibold text-base text-gray-800">TestRail Test Execution</h3>
-            <p class="mt-1 text-sm text-gray-700">Created and executed test suites in TestRail. Managed test runs and produced execution reports for demo/review.</p>
-          </article>
-
-          <article class="border-b border-gray-200 pb-3">
-            <h3 class="font-semibold text-base text-gray-800">Selenium Automation Scripts (Python)</h3>
-            <p class="mt-1 text-sm text-gray-700">Automated login, search and form submission scenarios using Python + Selenium. Implemented robust locators (XPath/CSS) and simple PyTest-based flows.</p>
-          </article>
-
-          <article>
-            <h3 class="font-semibold text-base text-gray-800">Python Mini Projects</h3>
-            <p class="mt-1 text-sm text-gray-700">Completed 100+ exercises (data structures, file handling, OOP). Built utilities for data validation and string processing used in small automation tasks.</p>
-          </article>
+      <header>
+        <h1 class="name">Raj Shinde</h1>
+        <div class="contact">
+          Mumbai, India |
+          <a href="tel:+91 7558353408">+91 7558353408 </a>|
+          <a href="#" target="_blank" rel="noopener">raaajshinde@gmail.com</a>
         </div>
+      </header>
 
-        <!-- Education -->
-        <div>
-          <h2 class="font-bold text-lg">Education</h2>
-          <p class="mt-2 text-sm font-semibold text-gray-700">[Degree: e.g., B.Sc / B.Tech / Other] — [Year]</p>
-          <p class="text-sm text-gray-600">[College / University Name]</p>
-        </div>
+      <!-- PROJECTS -->
+      <section>
+        <h2 class="section">Projects</h2>
 
-        <!-- Strengths -->
-        <div>
-          <h2 class="font-bold text-lg">Strengths & Achievements</h2>
-          <ul class="mt-2 text-sm text-gray-700 list-disc list-inside space-y-1">
-            <li>Quick learner with disciplined daily roadmap completion (60-day QA plan)</li>
-            <li>Strong problem-solving and debugging skills</li>
-            <li>Focused on outcome-driven testing and reliable reporting</li>
+        <div class="entry">
+          <div class="row">
+            <div class="title">Student Performance Prediction</div>
+            <div class="meta">Dec 2023 – Feb 2024</div>
+          </div>
+          <ul>
+            <li><span class="bullet">●</span>Built a machine learning pipeline to forecast student academic performance with <strong>96 % accuracy</strong>.</li>
+            <li><span class="bullet">●</span>Applied preprocessing, feature engineering, and model ensembling to improve generalization and robustness.</li>
+            <li><span class="bullet">●</span>Built a machine learning pipeline to forecast student academic performance with <strong>96 % accuracy</strong>.</li>
+            <li><span class="bullet">●</span>Applied preprocessing, feature engineering, and model ensembling to improve generalization and robustness.</li>
           </ul>
         </div>
 
+        
 
+        <div class="entry">
+          <div class="row">
+            <div class="title">Manual Testing Practice — Flipkart Web App</div>
+            <div class="meta">Aug 2024</div>
+          </div>
+          <ul>
+            <li><span class="bullet">●</span>Designed and executed detailed test cases for login, search, and cart modules.</li>
+            <li><span class="bullet">●</span>Logged and tracked defects using JIRA and documented test runs in TestRail.</li>
+            <li><span class="bullet">●</span>Designed and executed detailed test cases for login, search, and cart modules.</li>
+            <li><span class="bullet">●</span>Logged and tracked defects using JIRA and documented test runs in TestRail.</li>
+          </ul>
+        </div>
       </section>
-    </div>
+
+      <!-- EDUCATION -->
+      <section>
+        <h2 class="section">Education</h2>
+        <div class="entry">
+          <div class="row">
+            <div class="title">Saket College of Arts, Science & Commerce<br>
+              Mumbai University <br>
+              <span style="font-weight:600;font-size:11.8pt">MSc Information Technology (Pursuing)</span></div>
+            <div class="meta">2025-2027 </div>
+          </div>
+          <!-- <p class="muted">GPA: 8.06</p> -->
+        </div>
+        <hr style="height:1px;border-width:0;;background-color:lightgrey">
+
+        <div class="entry">
+          <div class="row">
+            <div class="title">
+              Saket College of Arts, Science & Commerce<br>
+              Mumbai University <br>Bachelor of Science in Information Technology</div>
+            <div class="meta">2022-2025</div>
+          </div>
+          <p class="muted">Mumbai University</p>
+          <p class="muted">CGPA: 8</p>
+
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section>
+        <h2 class="section">Skills</h2>
+        <div class="skills-grid">
+          <div><span class="bullet">●</span>Python</div>
+          <div><span class="bullet">●</span>Selenium</div>
+          <div><span class="bullet">●</span>Pytest</div>
+          <div><span class="bullet">●</span>JIRA</div>
+
+          <div><span class="bullet">●</span>TestRail</div>
+          <div><span class="bullet">●</span>Manual Testing</div>
+          <div><span class="bullet">●</span>HTML</div>
+          <div><span class="bullet">●</span>CSS</div>
+          
+          <div><span class="bullet">●</span>TailwindCSS</div>
+          <div><span class="bullet">●</span>Excel</div>
+          <div><span class="bullet">●</span>Bootstrap</div>
+          <div style="visibility:hidden;">placeholder</div>
+          <div style="visibility:hidden;">placeholder</div>
+          <div style="visibility:hidden;">placeholder</div>
+        </div>
+      </section>
+    </article>
   </div>
 
-  <!-- Floating Print Button -->
-  <div class="fixed bottom-6 right-6 no-print">
-    <button onclick="window.print()" class="bg-white text-black px-3 py-2 rounded-md text-sm shadow hover:bg-green-700">
-      Print / Save PDF
-    </button>
-  </div>
+  <button id="saveBtn" aria-label="Save as PDF">💾 Save as PDF</button>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <script>
+    const saveBtn=document.getElementById('saveBtn');
+    saveBtn.addEventListener('click',async()=>{
+      saveBtn.style.display='none';
+      const wrap=document.createElement('div');
+      wrap.style.position='fixed';
+      wrap.style.left='-10000px';
+      wrap.style.top='0';
+      wrap.style.width='210mm';
+      wrap.style.height='297mm';
+      wrap.style.background='#fff';
+      const orig=document.getElementById('paper');
+      const clone=orig.cloneNode(true);
+      clone.style.width='calc(210mm - 24mm)';
+      clone.style.height='calc(297mm - 24mm)';
+      clone.style.boxSizing='border-box';
+      clone.style.padding=getComputedStyle(orig).padding;
+      clone.style.overflow='hidden';
+      clone.style.borderRadius='0';
+      clone.style.boxShadow='none';
+      wrap.appendChild(clone);
+      document.body.appendChild(wrap);
+      const opt={
+        margin:0,
+        filename:'Raj_Shinde_Resume.pdf',
+        image:{type:'jpeg',quality:0.98},
+        html2canvas:{scale:2,useCORS:true,scrollY:0},
+        jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+      };
+      try{await html2pdf().set(opt).from(clone).save();}
+      catch(e){console.error(e);alert('PDF failed');}
+      finally{document.body.removeChild(wrap);saveBtn.style.display='';}
+    });
+    document.addEventListener('keydown',e=>{
+      if((e.ctrlKey||e.metaKey)&&(e.key==='s'||e.key==='S')){e.preventDefault();saveBtn.click();}
+    });
+  </script>
 </body>
 </html>
-
