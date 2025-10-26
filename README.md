@@ -1,1 +1,1 @@
-Link : https://alwaysrajshinde.github.io/Resume/
+Link : https://alwaysrajshinde.github.io/resume/
